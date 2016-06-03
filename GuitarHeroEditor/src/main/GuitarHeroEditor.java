@@ -22,8 +22,7 @@ public class GuitarHeroEditor
 	
 	static JPanel panel = new JPanel();
 	
-	static JButton importButton = new JButton("IMPORT");
-	static JButton exportButton = new JButton("EXPORT");
+	static JButton playButton = new JButton("START");
 	
 	static JPanel infoPanel = new JPanel();
 	
@@ -31,6 +30,9 @@ public class GuitarHeroEditor
 	static JTextField bpmField = new JTextField("60");
 	static JTextField bpmOffsetField = new JTextField("0.0");
 	static JTextField zoomField = new JTextField("1.0");
+	
+	static JButton importButton = new JButton("IMPORT");
+	static JButton exportButton = new JButton("EXPORT");
 	
 	static VisualSong song = new VisualSong();
 	
@@ -46,6 +48,33 @@ public class GuitarHeroEditor
 		panel.setPreferredSize(new Dimension(800, 100));
 		panel.setLayout(new GridLayout(1, 4, 5, 0));
 		frame.add(panel, BorderLayout.NORTH);
+		
+		//
+		
+		playButton.setActionCommand("start");
+		playButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{	
+		        if(e.getActionCommand().equals("start"))
+		        {
+		        	song.playSong();
+		        	
+		        	playButton.setActionCommand("stop");
+		        	playButton.setText("STOP");
+		        	
+		        	song.requestFocusInWindow();
+		        }
+		        else
+		        {
+		        	song.stopSong();
+		        	
+		        	playButton.setActionCommand("start");
+		        	playButton.setText("START");
+		        }
+			}
+		});
+		panel.add(playButton);
 		
 		//
 		
@@ -156,6 +185,8 @@ public class GuitarHeroEditor
 		        	String filePath = fileChooser.getSelectedFile().getAbsolutePath();
 		        	
 		            song.input(filePath);
+		            
+		            songFileField.setText(song.getSongFile());
 		        }
 			}
 		});
